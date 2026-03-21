@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tilak Ceremony | Pawan Kumar &amp; Pooja</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-brand">P &amp; P</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="tilak.html" class="active">Tilak</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ── Page Hero ── -->
+  <section class="page-hero" id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tagline">Pre-Wedding Ritual · 20 April 2024</p>
+      <div class="hero-divider-top"></div>
+      <h1 class="hero-names" style="font-size: clamp(2.4rem, 6vw, 4.2rem);">
+        Tilak
+        <span class="ampersand" style="font-size:0.45em;">Ceremony</span>
+      </h1>
+      <div class="hero-divider-bottom">
+        <span></span>
+        <span class="lotus">❧</span>
+        <span></span>
+      </div>
+      <p class="hero-date">270 Photographs</p>
+    </div>
+  </section>
+
+  <!-- ── Full Gallery ── -->
+  <section id="gallery-section">
+    <div class="section-header reveal">
+      <p class="section-label">Complete Album</p>
+      <h2 class="section-title">All <em>Moments</em></h2>
+      <div class="section-divider">
+        <span class="line"></span>
+        <span class="ornament">✿</span>
+        <span class="line"></span>
+      </div>
+      <p style="font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--text-light); font-size:1.1rem; margin-top:12px;">
+        The Tilak ceremony marks the formal acceptance of the groom by the bride's family —
+        a sacred vermillion mark, blessings, and joyous celebration shared with loved ones.
+      </p>
+    </div>
+
+    <div class="gallery-controls reveal reveal-delay-1">
+      <span class="gallery-count" id="galleryCount">Loading…</span>
+      <button class="btn-load" id="btnLoadMore">Load More ↓</button>
+      <button class="btn-load" id="btnLoadAll">Show All</button>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="footer-ornament">✿</div>
+    <p class="footer-names">Pawan Kumar &amp; Pooja</p>
+    <p class="footer-date">20th April 2024 · Vivah Utsav</p>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">All photographs reserved · 2024</p>
+  </footer>
+
+  <!-- ── Lightbox ── -->
+  <div id="lightbox">
+    <button id="lb-close" aria-label="Close">✕</button>
+    <button class="lb-btn" id="lb-prev" aria-label="Previous">&#8249;</button>
+    <div class="lb-inner">
+      <img id="lb-img" src="" alt="Wedding photo" />
+    </div>
+    <button class="lb-btn" id="lb-next" aria-label="Next">&#8250;</button>
+    <div class="lb-counter" id="lb-counter"></div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script src="js/tilak.js"></script>
+</body>
+</html>
