@@ -1,6 +1,15 @@
 // ── All Tilak Images ─────────────────────────────────────────────────
+// Entries can be a filename (resolved via TILAK/) or a full https:// URL
 const BASE = 'TILAK/';
+
+function imgSrc(entry) {
+  return entry.startsWith('http') ? entry : BASE + entry;
+}
+
 const images = [
+  // ── Google Drive hosted image ─────────────────────────────────────
+  'https://lh3.googleusercontent.com/d/1mkizoH77PPu631fXKPIlepk0PVlEr1AZ',
+  // ── Local images ─────────────────────────────────────────────────────
   '_DSC1316.JPG','_DSC1319.JPG','_DSC1322.JPG','_DSC1324.JPG','_DSC1327.JPG',
   '_DSC1329.JPG','_DSC1330.JPG','_DSC1334.JPG','_DSC1337.JPG','_DSC1338.JPG',
   '_DSC1339.JPG','_DSC1340.JPG','_DSC1341.JPG','_DSC1342.JPG','_DSC1344.JPG',
@@ -83,7 +92,7 @@ function addItems(start, end) {
     item.className = 'gallery-item';
 
     const img = document.createElement('img');
-    img.src      = BASE + images[i];
+    img.src      = imgSrc(images[i]);
     img.alt      = `Tilak ceremony photo ${i + 1}`;
     img.loading  = 'lazy';
     img.decoding = 'async';
@@ -120,14 +129,17 @@ btnAll.addEventListener('click', loadAll);
 loadMore();
 
 // ── Lightbox ──────────────────────────────────────────────────────────
-const lightbox  = document.getElementById('lightbox');
-const lbImg     = document.getElementById('lb-img');
-const lbCounter = document.getElementById('lb-counter');
-const lbClose   = document.getElementById('lb-close');
-const lbPrev    = document.getElementById('lb-prev');
-const lbNext    = document.getElementById('lb-next');
-let currentIdx  = 0;
+const lightbox   = document.getElementById('lightbox');
+const lbImg      = document.getElementById('lb-img');
+const lbCounter  = document.getElementById('lb-counter');
+const lbClose    = document.getElementById('lb-close');
+const lbPrev     = document.getElementById('lb-prev');
+const lbNext     = document.getElementById('lb-next');
+const lbPlay     = document.getElementById('lb-play');
+const lbProgressBar = document.getElementById('lb-progress-bar');
+let currentIdx   = 0;
 
+// ── Core open / close / navigate ─────────────────────────────────────
 function openLightbox(idx) {
   currentIdx = idx;
   setLbImage(idx);
@@ -136,6 +148,8 @@ function openLightbox(idx) {
 }
 
 function closeLightbox() {
+  stopSlideshow();
+  resetZoom();
   lightbox.classList.remove('active');
   document.body.style.overflow = '';
 }
@@ -147,35 +161,183 @@ function setLbImage(idx) {
     lbImg.src = tmp.src;
     lbImg.classList.remove('loading');
   };
-  tmp.src = BASE + images[idx];
+  tmp.src = imgSrc(images[idx]);
   lbCounter.textContent = `${idx + 1} / ${images.length}`;
 }
 
 function lbGo(dir) {
+  resetZoom();
   currentIdx = (currentIdx + dir + images.length) % images.length;
   setLbImage(currentIdx);
+  if (slideshowActive) restartProgress();
 }
 
 lbClose.addEventListener('click', closeLightbox);
-lbPrev.addEventListener('click', () => lbGo(-1));
-lbNext.addEventListener('click', () => lbGo(1));
+lbPrev.addEventListener('click', () => { lbGo(-1); });
+lbNext.addEventListener('click', () => { lbGo(1); });
 lightbox.addEventListener('click', (e) => {
   if (e.target === lightbox) closeLightbox();
 });
-
 document.addEventListener('keydown', (e) => {
   if (!lightbox.classList.contains('active')) return;
-  if (e.key === 'Escape')      closeLightbox();
-  if (e.key === 'ArrowLeft')   lbGo(-1);
-  if (e.key === 'ArrowRight')  lbGo(1);
+  if (e.key === 'Escape')     closeLightbox();
+  if (e.key === 'ArrowLeft')  lbGo(-1);
+  if (e.key === 'ArrowRight') lbGo(1);
+  if (e.key === ' ')          toggleSlideshow();
 });
 
-// Touch swipe
-let touchStartX = 0;
+// ── Slideshow ─────────────────────────────────────────────────────────
+const SLIDESHOW_MS  = 3500;
+let slideshowActive = false;
+let slideshowTimer  = null;
+
+function startSlideshow() {
+  slideshowActive = true;
+  lbPlay.classList.add('playing');
+  lbPlay.innerHTML = '&#9646;&#9646;'; // pause icon
+  lbPlay.setAttribute('aria-label', 'Pause slideshow');
+  restartProgress();
+}
+
+function stopSlideshow() {
+  slideshowActive = false;
+  clearTimeout(slideshowTimer);
+  lbPlay.classList.remove('playing');
+  lbPlay.innerHTML = '&#9654;'; // play icon
+  lbPlay.setAttribute('aria-label', 'Play slideshow');
+  lbProgressBar.style.transition = 'none';
+  lbProgressBar.style.width = '0%';
+}
+
+function toggleSlideshow() {
+  slideshowActive ? stopSlideshow() : startSlideshow();
+}
+
+function restartProgress() {
+  clearTimeout(slideshowTimer);
+  // Reset bar instantly, then animate
+  lbProgressBar.style.transition = 'none';
+  lbProgressBar.style.width = '0%';
+  void lbProgressBar.offsetWidth; // force reflow
+  lbProgressBar.style.transition = `width ${SLIDESHOW_MS}ms linear`;
+  lbProgressBar.style.width = '100%';
+  slideshowTimer = setTimeout(() => {
+    if (!slideshowActive) return;
+    lbGo(1);
+  }, SLIDESHOW_MS);
+}
+
+lbPlay.addEventListener('click', toggleSlideshow);
+
+// ── Pinch-to-Zoom & Pan (touch) ───────────────────────────────────────
+let scale     = 1;
+let panX      = 0;
+let panY      = 0;
+let isPinching  = false;
+let initDist    = 0;
+let initScale   = 1;
+let isDragging  = false;
+let dragStartX  = 0;
+let dragStartY  = 0;
+let dragPanX    = 0;
+let dragPanY    = 0;
+let lastTap     = 0;
+
+function applyTransform(animated) {
+  if (animated) {
+    lbImg.style.transition = 'transform 0.25s ease';
+    setTimeout(() => { lbImg.style.transition = ''; }, 260);
+  } else {
+    lbImg.style.transition = '';
+  }
+  lbImg.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+  lbImg.classList.toggle('zoomed', scale > 1);
+}
+
+function resetZoom() {
+  scale = 1; panX = 0; panY = 0;
+  lbImg.style.transition = 'transform 0.25s ease';
+  lbImg.style.transform  = '';
+  lbImg.classList.remove('zoomed', 'dragging');
+  setTimeout(() => { lbImg.style.transition = ''; }, 260);
+}
+
+function getDist(touches) {
+  return Math.hypot(
+    touches[0].clientX - touches[1].clientX,
+    touches[0].clientY - touches[1].clientY
+  );
+}
+
+lbImg.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 2) {
+    // ── Pinch start ──
+    isPinching = true;
+    isDragging = false;
+    initDist   = getDist(e.touches);
+    initScale  = scale;
+    e.preventDefault();
+  } else if (e.touches.length === 1) {
+    // ── Double-tap ──
+    const now = Date.now();
+    if (now - lastTap < 280) {
+      lastTap = 0;
+      if (scale > 1) { resetZoom(); }
+      else { scale = 2.5; applyTransform(true); }
+      e.preventDefault();
+      return;
+    }
+    lastTap = now;
+    // ── Pan when zoomed ──
+    if (scale > 1) {
+      isDragging = true;
+      dragStartX = e.touches[0].clientX;
+      dragStartY = e.touches[0].clientY;
+      dragPanX   = panX;
+      dragPanY   = panY;
+      lbImg.classList.add('dragging');
+      e.preventDefault();
+    }
+  }
+}, { passive: false });
+
+lbImg.addEventListener('touchmove', (e) => {
+  if (isPinching && e.touches.length === 2) {
+    const newScale = initScale * (getDist(e.touches) / initDist);
+    scale = Math.min(Math.max(newScale, 1), 4);
+    applyTransform(false);
+    e.preventDefault();
+  } else if (isDragging && e.touches.length === 1 && scale > 1) {
+    panX = dragPanX + (e.touches[0].clientX - dragStartX);
+    panY = dragPanY + (e.touches[0].clientY - dragStartY);
+    applyTransform(false);
+    e.preventDefault();
+  }
+}, { passive: false });
+
+lbImg.addEventListener('touchend', (e) => {
+  if (e.touches.length < 2) isPinching = false;
+  if (e.touches.length === 0) {
+    isDragging = false;
+    lbImg.classList.remove('dragging');
+    // Snap back to 1× if pinch released very close to 1
+    if (scale < 1.08) resetZoom();
+  }
+});
+
+// ── Swipe to navigate (when NOT zoomed) ──────────────────────────────
+let swipeStartX = 0;
+let swipeStartY = 0;
+
 lightbox.addEventListener('touchstart', (e) => {
-  touchStartX = e.touches[0].clientX;
+  if (e.target === lbImg) return; // handled above
+  swipeStartX = e.touches[0].clientX;
+  swipeStartY = e.touches[0].clientY;
 }, { passive: true });
+
 lightbox.addEventListener('touchend', (e) => {
-  const dx = e.changedTouches[0].clientX - touchStartX;
-  if (Math.abs(dx) > 50) lbGo(dx < 0 ? 1 : -1);
+  if (e.target === lbImg || scale > 1) return;
+  const dx = e.changedTouches[0].clientX - swipeStartX;
+  const dy = e.changedTouches[0].clientY - swipeStartY;
+  if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) lbGo(dx < 0 ? 1 : -1);
 });
