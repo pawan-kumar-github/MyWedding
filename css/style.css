@@ -337,6 +337,17 @@ section { padding: 100px 48px; }
 /* ══════════════════════════════════════
    TILAK PREVIEW (home page)
 ══════════════════════════════════════ */
+#engagement-preview {
+  background: var(--dark);
+  padding: 100px 48px;
+}
+#engagement-preview .section-label,
+#engagement-preview .section-title,
+#engagement-preview .section-title em,
+#engagement-preview .tilak-about p { color: var(--cream); }
+#engagement-preview .line { background: var(--gold); }
+#engagement-preview .btn-view-all { color: var(--gold-light); border-color: var(--gold); }
+#engagement-preview .btn-view-all:hover { background: var(--gold); color: #fff; }
 #tilak-preview {
   background: var(--cream);
   padding: 100px 48px;
@@ -858,7 +869,7 @@ footer {
   .nav-links.open { right: 0; }
   .nav-toggle { display: flex; z-index: 101; }
   section { padding: 70px 20px; }
-  #tilak-preview, #matkor-preview, #barat-preview { padding: 70px 20px; }
+  #engagement-preview, #tilak-preview, #matkor-preview, #barat-preview { padding: 70px 20px; }
   #gallery-section { padding: 60px 12px 80px; }
   #lb-prev { left: 8px; }
   #lb-next { right: 8px; }
