@@ -475,31 +475,67 @@ section { padding: 100px 48px; }
 }
 .gallery-item {
   break-inside: avoid;
-  margin-bottom: 10px;
-  overflow: hidden;
+  margin-bottom: 16px;
   cursor: pointer;
   position: relative;
-  background: var(--cream-dark);
+  background: #0a0202;
+  padding: 8px;
+  border: 1px solid #2C1810;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.45);
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.65);
+}
+
+/* Inner mehndi border line */
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border: 0.5px solid rgba(100,30,10,0.5);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Mehndi corner ornaments — 4 corners via background-image */
+.gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Cpolygon points='0,0 24,0 0,24' fill='%230a0202' opacity='0.88'/%3E%3Cpath d='M2,40 L2,2 L40,2' stroke='%232C1810' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7,35 L7,7 L35,7' stroke='%232C1810' stroke-width='0.6' fill='none' stroke-linecap='round' opacity='0.5'/%3E%3Ccircle cx='2' cy='2' r='2.5' fill='%231a0808'/%3E%3Cpath d='M2,2 C14,2 18,13 11,19 C7,22 2,16 2,2Z' fill='%231a0808'/%3E%3Cpath d='M5,5 C14,5 17,13 11,17 C9,19 5,14 5,5Z' fill='none' stroke='%233d1212' stroke-width='0.7'/%3E%3Ccircle cx='10' cy='10' r='2.3' fill='%232C1810'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%230a0202'/%3E%3Ccircle cx='21' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='30' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='21' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='30' r='1.8' fill='%231a0808'/%3E%3Cpath d='M2,14 C6,14 9,18 7,21 C5,23 2,20 2,14Z' fill='%231a0808' opacity='0.6'/%3E%3Cpath d='M14,2 C14,6 18,9 21,7 C23,5 20,2 14,2Z' fill='%231a0808' opacity='0.6'/%3E%3C/svg%3E") left top / 42px 42px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Cg transform='rotate(90 21 21)'%3E%3Cpolygon points='0,0 24,0 0,24' fill='%230a0202' opacity='0.88'/%3E%3Cpath d='M2,40 L2,2 L40,2' stroke='%232C1810' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7,35 L7,7 L35,7' stroke='%232C1810' stroke-width='0.6' fill='none' stroke-linecap='round' opacity='0.5'/%3E%3Ccircle cx='2' cy='2' r='2.5' fill='%231a0808'/%3E%3Cpath d='M2,2 C14,2 18,13 11,19 C7,22 2,16 2,2Z' fill='%231a0808'/%3E%3Cpath d='M5,5 C14,5 17,13 11,17 C9,19 5,14 5,5Z' fill='none' stroke='%233d1212' stroke-width='0.7'/%3E%3Ccircle cx='10' cy='10' r='2.3' fill='%232C1810'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%230a0202'/%3E%3Ccircle cx='21' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='30' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='21' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='30' r='1.8' fill='%231a0808'/%3E%3Cpath d='M2,14 C6,14 9,18 7,21 C5,23 2,20 2,14Z' fill='%231a0808' opacity='0.6'/%3E%3Cpath d='M14,2 C14,6 18,9 21,7 C23,5 20,2 14,2Z' fill='%231a0808' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E") right top / 42px 42px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Cg transform='rotate(180 21 21)'%3E%3Cpolygon points='0,0 24,0 0,24' fill='%230a0202' opacity='0.88'/%3E%3Cpath d='M2,40 L2,2 L40,2' stroke='%232C1810' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7,35 L7,7 L35,7' stroke='%232C1810' stroke-width='0.6' fill='none' stroke-linecap='round' opacity='0.5'/%3E%3Ccircle cx='2' cy='2' r='2.5' fill='%231a0808'/%3E%3Cpath d='M2,2 C14,2 18,13 11,19 C7,22 2,16 2,2Z' fill='%231a0808'/%3E%3Cpath d='M5,5 C14,5 17,13 11,17 C9,19 5,14 5,5Z' fill='none' stroke='%233d1212' stroke-width='0.7'/%3E%3Ccircle cx='10' cy='10' r='2.3' fill='%232C1810'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%230a0202'/%3E%3Ccircle cx='21' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='30' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='21' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='30' r='1.8' fill='%231a0808'/%3E%3Cpath d='M2,14 C6,14 9,18 7,21 C5,23 2,20 2,14Z' fill='%231a0808' opacity='0.6'/%3E%3Cpath d='M14,2 C14,6 18,9 21,7 C23,5 20,2 14,2Z' fill='%231a0808' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E") right bottom / 42px 42px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 42 42'%3E%3Cg transform='rotate(270 21 21)'%3E%3Cpolygon points='0,0 24,0 0,24' fill='%230a0202' opacity='0.88'/%3E%3Cpath d='M2,40 L2,2 L40,2' stroke='%232C1810' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3Cpath d='M7,35 L7,7 L35,7' stroke='%232C1810' stroke-width='0.6' fill='none' stroke-linecap='round' opacity='0.5'/%3E%3Ccircle cx='2' cy='2' r='2.5' fill='%231a0808'/%3E%3Cpath d='M2,2 C14,2 18,13 11,19 C7,22 2,16 2,2Z' fill='%231a0808'/%3E%3Cpath d='M5,5 C14,5 17,13 11,17 C9,19 5,14 5,5Z' fill='none' stroke='%233d1212' stroke-width='0.7'/%3E%3Ccircle cx='10' cy='10' r='2.3' fill='%232C1810'/%3E%3Ccircle cx='10' cy='10' r='1' fill='%230a0202'/%3E%3Ccircle cx='21' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='30' cy='2' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='21' r='1.8' fill='%231a0808'/%3E%3Ccircle cx='2' cy='30' r='1.8' fill='%231a0808'/%3E%3Cpath d='M2,14 C6,14 9,18 7,21 C5,23 2,20 2,14Z' fill='%231a0808' opacity='0.6'/%3E%3Cpath d='M14,2 C14,6 18,9 21,7 C23,5 20,2 14,2Z' fill='%231a0808' opacity='0.6'/%3E%3C/g%3E%3C/svg%3E") left bottom / 42px 42px no-repeat;
+}
+
 .gallery-item img {
   display: block;
   width: 100%;
   height: auto;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
-.gallery-item:hover img { transform: scale(1.06); }
+.gallery-item img.loaded { opacity: 1; }
+.gallery-item:hover img { transform: scale(1.04); }
 .gallery-item .item-overlay {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(91,16,16,0.65) 0%, transparent 60%);
+  inset: 8px;
+  background: linear-gradient(to top, rgba(10,2,2,0.75) 0%, transparent 55%);
   opacity: 0;
   transition: opacity 0.3s;
   display: flex;
   align-items: flex-end;
   padding: 14px;
+  z-index: 1;
 }
 .gallery-item:hover .item-overlay { opacity: 1; }
-.gallery-item .item-overlay .zoom-icon { color: #fff; font-size: 1.4rem; }
+.gallery-item .item-overlay .zoom-icon { color: var(--gold-light); font-size: 1.4rem; }
 
 /* ══════════════════════════════════════
    LIGHTBOX

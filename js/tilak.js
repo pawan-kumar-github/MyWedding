@@ -338,6 +338,8 @@ function addItems(start, end) {
     img.alt      = `Tilak ceremony photo ${i + 1}`;
     img.loading  = 'lazy';
     img.decoding = 'async';
+    img.onload  = () => img.classList.add('loaded');
+    img.onerror = () => img.classList.add('loaded');
 
     const overlay = document.createElement('div');
     overlay.className = 'item-overlay';
