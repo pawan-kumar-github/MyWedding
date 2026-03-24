@@ -95,3 +95,49 @@ function gdriveImgUrl(input, mode, thumbSize) {
     ? gdriveThumbnailUrl(id, thumbSize || 800)
     : gdriveFullUrl(id);
 }
+
+// ── Mehndi Corner Ornaments ───────────────────────────────────────────
+// Injects real SVG DOM elements at each corner of a gallery item.
+// Using JS-injected SVGs instead of CSS data URIs for full mobile support.
+
+const _mehndiSVG = (rotate) => {
+  const cx = 21, cy = 21;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42">
+    <g transform="rotate(${rotate} ${cx} ${cy})">
+      <polygon points="0,0 24,0 0,24" fill="#0a0202" opacity="0.9"/>
+      <path d="M2,40 L2,2 L40,2" stroke="#2C1810" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <path d="M7,35 L7,7 L35,7" stroke="#2C1810" stroke-width="0.6" fill="none" stroke-linecap="round" opacity="0.5"/>
+      <circle cx="2" cy="2" r="2.5" fill="#1a0808"/>
+      <path d="M2,2 C14,2 18,13 11,19 C7,22 2,16 2,2Z" fill="#1a0808"/>
+      <path d="M5,5 C14,5 17,13 11,17 C9,19 5,14 5,5Z" fill="none" stroke="#3d1212" stroke-width="0.7"/>
+      <circle cx="10" cy="10" r="2.3" fill="#2C1810"/>
+      <circle cx="10" cy="10" r="1" fill="#0a0202"/>
+      <path d="M2,14 C6,14 9,18 7,21 C5,23 2,20 2,14Z" fill="#1a0808" opacity="0.65"/>
+      <path d="M14,2 C14,6 18,9 21,7 C23,5 20,2 14,2Z" fill="#1a0808" opacity="0.65"/>
+      <circle cx="21" cy="2" r="1.8" fill="#1a0808"/>
+      <circle cx="30" cy="2" r="1.8" fill="#1a0808"/>
+      <circle cx="2" cy="21" r="1.8" fill="#1a0808"/>
+      <circle cx="2" cy="30" r="1.8" fill="#1a0808"/>
+    </g>
+  </svg>`;
+};
+
+/**
+ * Append four mehndi corner ornaments to a gallery item element.
+ * @param {HTMLElement} item
+ */
+function addMehndiCorners(item) {
+  const corners = [
+    { cls: 'mc-tl', rotate: 0   },
+    { cls: 'mc-tr', rotate: 90  },
+    { cls: 'mc-br', rotate: 180 },
+    { cls: 'mc-bl', rotate: 270 },
+  ];
+  corners.forEach(({ cls, rotate }) => {
+    const el = document.createElement('span');
+    el.className = 'mehndi-corner ' + cls;
+    el.innerHTML = _mehndiSVG(rotate);
+    item.appendChild(el);
+  });
+}
+

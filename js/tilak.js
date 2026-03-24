@@ -320,6 +320,31 @@ const countEl = document.getElementById('galleryCount');
 const btnMore = document.getElementById('btnLoadMore');
 const btnAll  = document.getElementById('btnLoadAll');
 
+// ── Column management ─────────────────────────────────────────────────
+let colEls  = [];
+let nextCol = 0;
+
+function getColCount() {
+  const w = window.innerWidth;
+  if (w >= 1200) return 4;
+  if (w >= 900)  return 3;
+  if (w >= 600)  return 2;
+  return 1;
+}
+
+function initGrid() {
+  grid.innerHTML = '';
+  colEls  = [];
+  nextCol = 0;
+  const n = getColCount();
+  for (let i = 0; i < n; i++) {
+    const col = document.createElement('div');
+    col.className = 'gallery-col';
+    grid.appendChild(col);
+    colEls.push(col);
+  }
+}
+
 // ── Gallery Builder ───────────────────────────────────────────────────
 function updateCount() {
   countEl.textContent = `Showing ${shown} of ${images.length} photos`;
@@ -328,7 +353,6 @@ function updateCount() {
 }
 
 function addItems(start, end) {
-  const frag = document.createDocumentFragment();
   for (let i = start; i < end && i < images.length; i++) {
     const item = document.createElement('div');
     item.className = 'gallery-item';
@@ -347,10 +371,11 @@ function addItems(start, end) {
 
     item.appendChild(img);
     item.appendChild(overlay);
+    addMehndiCorners(item);
     item.addEventListener('click', () => openLightbox(i));
-    frag.appendChild(item);
+    colEls[nextCol % colEls.length].appendChild(item);
+    nextCol++;
   }
-  grid.appendChild(frag);
 }
 
 function loadMore() {
@@ -370,6 +395,7 @@ btnMore.addEventListener('click', loadMore);
 btnAll.addEventListener('click', loadAll);
 
 // Initial load
+initGrid();
 loadMore();
 
 // ── Lightbox ──────────────────────────────────────────────────────────
