@@ -115,11 +115,12 @@ nav.scrolled {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-image: url('../TILAK/_DSC1382.JPG');
+  background-image: url('https://lh3.googleusercontent.com/d/1fFPsNuJ-xj7bpXfOz-WkQ_Pv6u40WvpY=w1920');
   background-size: cover;
-  background-position: center top;
-  transform: scale(1.05);
-  transition: transform 0.1s linear;
+  background-position: center center;
+  transform: scale(1.08);
+  will-change: transform;
+  transition: transform 0.05s linear;
 }
 .hero-overlay {
   position: absolute;
@@ -421,7 +422,6 @@ section { padding: 100px 48px; }
   overflow: hidden;
 }
 .page-hero .hero-bg {
-  background-image: url('../TILAK/_DSC1530.JPG');
   background-position: center 30%;
 }
 .page-hero .hero-content { padding-top: 60px; }
