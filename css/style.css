@@ -341,6 +341,21 @@ section { padding: 100px 48px; }
   background: var(--cream);
   padding: 100px 48px;
 }
+#matkor-preview {
+  background: var(--dark);
+  padding: 100px 48px;
+}
+#matkor-preview .section-label,
+#matkor-preview .section-title,
+#matkor-preview .section-title em,
+#matkor-preview .tilak-about p { color: var(--cream); }
+#matkor-preview .line { background: var(--gold); }
+#matkor-preview .btn-view-all { color: var(--gold-light); border-color: var(--gold); }
+#matkor-preview .btn-view-all:hover { background: var(--gold); color: #fff; }
+#barat-preview {
+  background: var(--cream-dark);
+  padding: 100px 48px;
+}
 .tilak-about {
   max-width: 800px;
   margin: 0 auto 60px;
@@ -843,7 +858,7 @@ footer {
   .nav-links.open { right: 0; }
   .nav-toggle { display: flex; z-index: 101; }
   section { padding: 70px 20px; }
-  #tilak-preview { padding: 70px 20px; }
+  #tilak-preview, #matkor-preview, #barat-preview { padding: 70px 20px; }
   #gallery-section { padding: 60px 12px 80px; }
   #lb-prev { left: 8px; }
   #lb-next { right: 8px; }
