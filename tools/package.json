@@ -1,0 +1,11 @@
+{
+  "name": "gdrive-image-fetcher",
+  "version": "1.0.0",
+  "description": "One-time utility to fetch public image links from a Google Drive folder",
+  "scripts": {
+    "fetch": "node get-drive-images.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
